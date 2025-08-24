@@ -23,7 +23,7 @@
       "properties": {
         "cmg.apiKey": {
           "type": "string",
-          "default": "AIzaSyB60XJ75skt3u2cGw9yBzvV91uxAxRDIBU",
+          "default": "",
           "description": "API key for Gemini AI"
         }
       }
