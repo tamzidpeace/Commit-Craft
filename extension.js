@@ -71,20 +71,38 @@ function activate(context) {
 				return;
 			}
 
-			// Show progress message
-			vscode.window.showInformationMessage('Generating commit message using Gemini AI...');
+			// Show progress message with cancellation support
+			const progressOptions = {
+				location: vscode.ProgressLocation.Notification,
+				title: "Commit Message Generator",
+				cancellable: true
+			};
 
-			// Format the diff for better LLM consumption
-			const formattedDiff = formatGitDiff(diff);
+			await vscode.window.withProgress(progressOptions, async (progress, token) => {
+				token.onCancellationRequested(() => {
+					console.log('User canceled the commit message generation');
+				});
 
-			// Generate commit message using LLM
-			const commitMessage = await generateCommitMessage(formattedDiff, apiKey);
-			
-			// Insert the commit message into VS Code's commit message input field
-			await insertCommitMessage(commitMessage);
-			
-			// Display success message
-			vscode.window.showInformationMessage(`Commit message generated and inserted: ${commitMessage}`);
+				progress.report({ message: 'Analyzing staged changes...' });
+
+				// Format the diff for better LLM consumption
+				const formattedDiff = formatGitDiff(diff);
+
+				progress.report({ message: 'Generating commit message with AI...', increment: 30 });
+
+				// Generate commit message using LLM
+				const commitMessage = await generateCommitMessage(formattedDiff, apiKey);
+				
+				progress.report({ message: 'Inserting commit message...', increment: 60 });
+
+				// Insert the commit message into VS Code's commit message input field
+				await insertCommitMessage(commitMessage);
+				
+				progress.report({ message: 'Done!', increment: 100 });
+
+				// Display success message
+				vscode.window.showInformationMessage(`Commit message generated and inserted: ${commitMessage}`);
+			});
 		} catch (error) {
 			console.error('Error:', error);
 			// Provide more detailed error messages based on the error type

@@ -21,12 +21,17 @@ We have successfully implemented a Visual Studio Code extension that automatical
    - Provides user feedback through information and error messages
    - Integrates with VS Code's settings for API key configuration
 
-4. **Error Handling**
+4. **UI Enhancements**
+   - Added a button above the commit message input for easy access
+   - Implemented progress reporting during message generation
+   - Added cancellation support for long-running operations
+
+5. **Error Handling**
    - Comprehensive error handling for Git operations
    - Detailed error messages for API issues
    - Fallback handling for various edge cases
 
-5. **Documentation**
+6. **Documentation**
    - Updated README with installation and usage instructions
    - CHANGELOG with version history
    - Development plan completion tracking
@@ -44,7 +49,9 @@ We have successfully implemented a Visual Studio Code extension that automatical
 1. Install the extension in VS Code
 2. Set your Gemini API key in the extension settings
 3. Stage your changes in Git
-4. Run the "Generate commit" command (Ctrl/Cmd + Shift + P, then type "Generate commit")
+4. Either:
+   - Run the "Generate commit" command (Ctrl/Cmd + Shift + P, then type "Generate commit")
+   - Click the pencil icon above the commit message input in the SCM view
 5. The extension will generate a commit message and insert it into the commit message field
 
 ## Testing
@@ -55,6 +62,8 @@ The extension has been tested and verified to:
 - Generate appropriate commit messages using Gemini AI
 - Insert messages into VS Code's commit field
 - Handle error cases gracefully
+- Show progress during generation
+- Support cancellation of long-running operations
 
 ## Future Improvements
 
@@ -63,3 +72,4 @@ Potential areas for enhancement:
 - More sophisticated diff formatting for better AI understanding
 - Additional configuration options for commit message style
 - Support for other AI providers
+- Localization for different languages

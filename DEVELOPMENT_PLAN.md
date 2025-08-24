@@ -57,7 +57,7 @@ This extension will automatically generate commit messages using an LLM (Gemini)
 
 ### Task 4: Gemini API Setup
 - [x] Register for Gemini API key
-- [x] Install required HTTP client libraries (axios)
+- [x] Install required HTTP client libraries (Google Generative AI)
 - [x] Create API client module
 - [x] Handle API authentication
 
@@ -85,13 +85,18 @@ This extension will automatically generate commit messages using an LLM (Gemini)
 - [x] Provide informative error messages
 - [x] Add success notifications
 
-### Task 9: Testing
+### Task 9: UI Enhancements
+- [x] Add button above commit message input
+- [x] Implement progress reporting during generation
+- [x] Add cancellation support
+
+### Task 10: Testing
 - [x] Create test cases for Git operations
 - [x] Test LLM integration with mock responses
 - [x] Verify commit message insertion
 - [x] Test error scenarios
 
-### Task 10: Documentation
+### Task 11: Documentation
 - [x] Update README with extension features
 - [x] Add installation instructions
 - [x] Document configuration steps
