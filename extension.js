@@ -21,7 +21,20 @@ function activate(context) {
 	// The commandId parameter must match the command field in package.json
 	const disposable = vscode.commands.registerCommand('cmg.commit', async function () {
 		// The code you place here will be executed every time your command is executed
+		await generateAndInsertCommitMessage();
+	});
 
+	// Register the command for the SCM button
+	const generateCommitMessageDisposable = vscode.commands.registerCommand('cmg.generateCommitMessage', async function () {
+		// The code you place here will be executed every time your command is executed
+		await generateAndInsertCommitMessage();
+	});
+
+	/**
+	 * Generate and insert commit message
+	 * This function contains the core logic for generating and inserting commit messages
+	 */
+	async function generateAndInsertCommitMessage() {
 		try {
 			// Get the API key from configuration
 			const config = vscode.workspace.getConfiguration('cmg');
@@ -83,7 +96,7 @@ function activate(context) {
 				vscode.window.showErrorMessage(`Error: ${error.message}`);
 			}
 		}
-	});
+	}
 
   /**
    * Format git diff output for better LLM consumption
@@ -193,6 +206,7 @@ Commit message:`;
   }
 
   context.subscriptions.push(disposable);
+  context.subscriptions.push(generateCommitMessageDisposable);
 }
 
 // This method is called when your extension is deactivated

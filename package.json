@@ -16,6 +16,11 @@
       {
         "command": "cmg.commit",
         "title": "Generate commit"
+      },
+      {
+        "command": "cmg.generateCommitMessage",
+        "title": "Generate Commit Message",
+        "icon": "$(pencil)"
       }
     ],
     "configuration": {
@@ -27,6 +32,15 @@
           "description": "API key for Gemini AI"
         }
       }
+    },
+    "menus": {
+      "scm/title": [
+        {
+          "command": "cmg.generateCommitMessage",
+          "when": "scmProvider == git",
+          "group": "navigation"
+        }
+      ]
     }
   },
   "scripts": {
