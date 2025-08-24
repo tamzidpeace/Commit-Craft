@@ -13,3 +13,5 @@ FINAL_SUMMARY.md
 QWEN.md
 CHANGELOG.md
 generate-icon.js
+extension.ts
+tsconfig.json

@@ -1,11 +1,11 @@
-const vscode = require("vscode");
-const simpleGit = require("simple-git");
-const { GoogleGenAI } = require("@google/genai");
+import * as vscode from 'vscode';
+import simpleGit, { SimpleGit } from 'simple-git';
+import { GoogleGenAI } from '@google/genai';
 
 /**
  * @param {vscode.ExtensionContext} context
  */
-function activate(context) {
+export function activate(context: vscode.ExtensionContext) {
   console.log('Congratulations, your extension "CommitCraft" is now active!');
 
   const disposable = vscode.commands.registerCommand(
@@ -23,10 +23,14 @@ function activate(context) {
   );
 
   async function generateAndInsertCommitMessage() {
+    // Define provider outside the try block to ensure it's accessible in the catch block
+    // Initialize with a default value to avoid "used before being assigned" error
+    let provider: string = "gemini"; 
+    
     try {
       const config = vscode.workspace.getConfiguration("commitcraft");
-      const apiKey = config.get("apiKey");
-      const provider = config.get("provider") || "gemini"; // Default to 'gemini'
+      const apiKey: string | undefined = config.get("apiKey");
+      provider = config.get("provider") || "gemini"; // Default to 'gemini'
 
       if (!apiKey) {
         vscode.window.showErrorMessage(
@@ -41,9 +45,9 @@ function activate(context) {
         return;
       }
 
-      const git = simpleGit(workspaceFolder.uri.fsPath);
+      const git: SimpleGit = simpleGit(workspaceFolder.uri.fsPath);
 
-      const isRepo = await git.checkIsRepo();
+      const isRepo: boolean = await git.checkIsRepo();
       if (!isRepo) {
         vscode.window.showErrorMessage(
           "Current workspace is not a Git repository"
@@ -51,7 +55,7 @@ function activate(context) {
         return;
       }
 
-      const diff = await git.diff(["--staged"]);
+      const diff: string = await git.diff(["--staged"]);
 
       if (!diff || diff.trim() === "") {
         vscode.window.showInformationMessage(
@@ -75,14 +79,14 @@ function activate(context) {
 
           progress.report({ message: "Analyzing staged changes..." });
 
-          const formattedDiff = formatGitDiff(diff);
+          const formattedDiff: string = formatGitDiff(diff);
 
           progress.report({
             message: "Generating commit message with AI...",
             increment: 30,
           });
 
-          const commitMessage = await generateCommitMessage(
+          const commitMessage: string = await generateCommitMessage(
             formattedDiff,
             apiKey,
             provider
@@ -104,16 +108,20 @@ function activate(context) {
       );
     } catch (error) {
       console.error("Error:", error);
-      if (error.code === "ENOENT") {
+      // Type guard for NodeJS.ErrnoException to access 'code' property
+      if (error instanceof Error && 'code' in error && error.code === "ENOENT") {
         vscode.window.showErrorMessage(
           "Git is not installed or not found in PATH"
         );
-      } else if (error.message.includes("API Error")) {
+      } else if (error instanceof Error && error.message.includes("API Error")) {
+        // 'provider' is now accessible here and has a default value
         vscode.window.showErrorMessage(
           `AI API Error (${provider}): ${error.message}`
         );
-      } else {
+      } else if (error instanceof Error) {
         vscode.window.showErrorMessage(`Error: ${error.message}`);
+      } else {
+        vscode.window.showErrorMessage(`Unknown error occurred`);
       }
     }
   }
@@ -123,7 +131,9 @@ function activate(context) {
    * @param {string} diff
    * @returns {string}
    */
-  function formatGitDiff(diff) {
+  function formatGitDiff(diff: string): string {
+    // For now, we'll just return the diff as is
+    // Later, we might want to format it more nicely
     return diff;
   }
 
@@ -134,7 +144,7 @@ function activate(context) {
    * @param {string} provider
    * @returns {Promise<string>}
    */
-  async function generateCommitMessage(diff, apiKey, provider) {
+  async function generateCommitMessage(diff: string, apiKey: string, provider: string): Promise<string> {
     try {
       // Create the prompt for the LLM
       const prompt = `Generate a detailed, informative git commit message for the following changes. Follow conventional commit format. The commit message should consist of a subject line (type: subject) followed by a blank line and then a body with bullet points describing the changes.
@@ -193,7 +203,7 @@ function activate(context) {
         // Extract the commit message from the response
         if (response && response.text) {
           // Clean up the response to get just the commit message
-          let commitMessage = response.text.trim();
+          let commitMessage: string = response.text.trim();
           // Remove any markdown formatting if present
           commitMessage = commitMessage.replace(/^["']|["']$/g, "");
           return commitMessage;
@@ -206,14 +216,12 @@ function activate(context) {
       }
     } catch (error) {
       console.error("API Error:", error);
-      if (error.response) {
-        throw new Error(
-          `API Error: ${error.response.status} - ${
-            error.response.data.message || error.response.statusText
-          }`
-        );
-      } else {
+      if (error instanceof Error && error.message.includes("API Error")) {
+        throw new Error(`API Error: ${error.message}`);
+      } else if (error instanceof Error) {
         throw new Error(`Network Error: ${error.message}`);
+      } else {
+        throw new Error(`Unknown API error occurred`);
       }
     }
   }
@@ -222,7 +230,7 @@ function activate(context) {
    * Insert commit message into VS Code's commit message input field
    * @param {string} commitMessage
    */
-  async function insertCommitMessage(commitMessage) {
+  async function insertCommitMessage(commitMessage: string) {
     try {
       // Get the Git extension
       const gitExtension = vscode.extensions.getExtension("vscode.git");
@@ -231,7 +239,7 @@ function activate(context) {
         // Activate the extension if it's not already activated
         const gitAPI = gitExtension.isActive
           ? gitExtension.exports.getAPI(1)
-          : await gitExtension.activate().then((api) => api.getAPI(1));
+          : (await gitExtension.activate()).getAPI(1);
 
         // Get the active repository (assuming single repository)
         const repository = gitAPI.repositories[0];
@@ -247,7 +255,11 @@ function activate(context) {
       }
     } catch (error) {
       console.error("Error inserting commit message:", error);
-      throw new Error(`Failed to insert commit message: ${error.message}`);
+      if (error instanceof Error) {
+        throw new Error(`Failed to insert commit message: ${error.message}`);
+      } else {
+        throw new Error(`Failed to insert commit message: Unknown error`);
+      }
     }
   }
 
@@ -256,9 +268,4 @@ function activate(context) {
 }
 
 // This method is called when your extension is deactivated
-function deactivate() {}
-
-module.exports = {
-  activate,
-  deactivate,
-};
+export function deactivate() {}

@@ -10,7 +10,7 @@
     "Other"
   ],
   "activationEvents": [],
-  "main": "./extension.js",
+  "main": "./out/extension.js",
   "icon": "icon.png",
   "repository": {
     "type": "git",
@@ -20,7 +20,8 @@
     "commands": [
       {
         "command": "commitcraft.commit",
-        "title": "Generate commit"
+        "title": "Generate commit",
+        "when": "!commitcraft.generating"
       },
       {
         "command": "commitcraft.generateCommitMessage",
@@ -53,7 +54,7 @@
       "scm/title": [
         {
           "command": "commitcraft.generateCommitMessage",
-          "when": "scmProvider == git",
+          "when": "scmProvider == git && !commitcraft.generating",
           "group": "navigation"
         }
       ]
@@ -62,16 +63,20 @@
   "scripts": {
     "lint": "eslint .",
     "pretest": "npm run lint",
-    "test": "vscode-test"
+    "test": "vscode-test",
+    "compile": "tsc -p ./tsconfig.json",
+    "watch": "tsc -w -p ./tsconfig.json",
+    "vscode:prepublish": "npm run compile"
   },
   "devDependencies": {
+    "canvas": "^2.11.2",
     "@types/mocha": "^10.0.10",
     "@types/node": "22.x",
     "@types/vscode": "^1.103.0",
     "@vscode/test-cli": "^0.0.11",
     "@vscode/test-electron": "^2.5.2",
-    "canvas": "^3.2.0",
-    "eslint": "^9.32.0"
+    "eslint": "^9.32.0",
+    "typescript": "^5.6.3"
   },
   "dependencies": {
     "@google/genai": "^1.15.0",
