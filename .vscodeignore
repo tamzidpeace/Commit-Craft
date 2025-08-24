@@ -8,3 +8,7 @@ vsc-extension-quickstart.md
 **/*.map
 **/eslint.config.mjs
 **/.vscode-test.*
+DEVELOPMENT_PLAN.md
+FINAL_SUMMARY.md
+QWEN.md
+CHANGELOG.md
