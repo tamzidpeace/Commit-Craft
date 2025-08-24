@@ -1,29 +1,32 @@
-# cmg README
+# CommitCraft README
 
-This extension automatically generates commit messages using Gemini AI based on your staged Git changes.
+This extension automatically generates detailed commit messages using AI (Gemini, OpenAI, Qwen, Claude, etc.) based on your staged Git changes.
 
 ## Features
 
-- Automatically generates commit messages using Gemini AI
+- Automatically generates detailed commit messages using AI
+- Supports multiple AI providers (Gemini, OpenAI, Qwen, Claude, etc.)
 - Works with staged Git changes
 - Inserts generated message directly into VS Code's commit message field
-- Follows conventional commit format
+- Follows conventional commit format with subject and body
 
 ## Requirements
 
 - Git must be installed and available in your PATH
-- A Gemini API key (free tier available)
+- An API key for your chosen AI provider
 
 ## Extension Settings
 
 This extension contributes the following settings:
 
-* `cmg.apiKey`: Your Gemini API key
+* `commitcraft.apiKey`: Your API key for the selected AI provider
+* `commitcraft.provider`: Select the AI provider for generating commit messages (default: gemini)
 
 To set your API key:
 1. Open VS Code settings (Ctrl/Cmd + ,)
-2. Search for "Commit Message Generator"
-3. Enter your Gemini API key in the "API key for Gemini AI" field
+2. Search for "CommitCraft"
+3. Enter your API key in the "API key for the selected AI provider" field
+4. Optionally, select your preferred AI provider
 
 ## Usage
 
@@ -34,10 +37,10 @@ To set your API key:
 ## Known Issues
 
 - May not work correctly with very large diffs
-- Requires internet connection to access Gemini API
+- Requires internet connection to access the AI API
 
 ## Release Notes
 
 ### 0.0.1
 
-Initial release of cmg
+Initial release of CommitCraft
