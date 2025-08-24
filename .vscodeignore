@@ -15,3 +15,4 @@ CHANGELOG.md
 generate-icon.js
 extension.ts
 tsconfig.json
+src/**

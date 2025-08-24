@@ -11,5 +11,9 @@
     "noFallthroughCasesInSwitch": true,
     "noUnusedParameters": true
   },
+  "include": [
+    "src/**/*",
+    "extension.ts"
+  ],
   "exclude": ["node_modules", ".vscode-test"]
 }
