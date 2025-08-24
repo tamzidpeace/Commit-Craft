@@ -1,47 +1,29 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 const vscode = require("vscode");
 const simpleGit = require("simple-git");
 const { GoogleGenAI } = require("@google/genai");
-
-// This method is called when your extension is activated
-// Your extension is activated the very first time the command is executed
 
 /**
  * @param {vscode.ExtensionContext} context
  */
 function activate(context) {
-  // Use the console to output diagnostic information (console.log) and errors (console.error)
-  // This line of code will only be executed once when your extension is activated
   console.log('Congratulations, your extension "CommitCraft" is now active!');
 
-  // The command has been defined in the package.json file
-  // Now provide the implementation of the command with  registerCommand
-  // The commandId parameter must match the command field in package.json
   const disposable = vscode.commands.registerCommand(
     "commitcraft.commit",
     async function () {
-      // The code you place here will be executed every time your command is executed
       await generateAndInsertCommitMessage();
     }
   );
 
-  // Register the command for the SCM button
   const generateCommitMessageDisposable = vscode.commands.registerCommand(
     "commitcraft.generateCommitMessage",
     async function () {
-      // The code you place here will be executed every time your command is executed
       await generateAndInsertCommitMessage();
     }
   );
 
-  /**
-   * Generate and insert commit message
-   * This function contains the core logic for generating and inserting commit messages
-   */
   async function generateAndInsertCommitMessage() {
     try {
-      // Get the API key and provider from configuration
       const config = vscode.workspace.getConfiguration("commitcraft");
       const apiKey = config.get("apiKey");
       const provider = config.get("provider") || "gemini"; // Default to 'gemini'
@@ -53,17 +35,14 @@ function activate(context) {
         return;
       }
 
-      // Get the current workspace folder
       const workspaceFolder = vscode.workspace.workspaceFolders?.[0];
       if (!workspaceFolder) {
         vscode.window.showErrorMessage("No workspace folder found");
         return;
       }
 
-      // Initialize simple-git with the workspace path
       const git = simpleGit(workspaceFolder.uri.fsPath);
 
-      // Check if the current directory is a Git repository
       const isRepo = await git.checkIsRepo();
       if (!isRepo) {
         vscode.window.showErrorMessage(
@@ -72,10 +51,8 @@ function activate(context) {
         return;
       }
 
-      // Get staged changes
       const diff = await git.diff(["--staged"]);
 
-      // Check if there are staged changes
       if (!diff || diff.trim() === "") {
         vscode.window.showInformationMessage(
           "No staged changes found. Please stage some changes first."
@@ -83,7 +60,6 @@ function activate(context) {
         return;
       }
 
-      // Show progress message with cancellation support
       const progressOptions = {
         location: vscode.ProgressLocation.Notification,
         title: "CommitCraft",
@@ -99,7 +75,6 @@ function activate(context) {
 
           progress.report({ message: "Analyzing staged changes..." });
 
-          // Format the diff for better LLM consumption
           const formattedDiff = formatGitDiff(diff);
 
           progress.report({
@@ -107,7 +82,6 @@ function activate(context) {
             increment: 30,
           });
 
-          // Generate commit message using LLM
           const commitMessage = await generateCommitMessage(
             formattedDiff,
             apiKey,
@@ -119,12 +93,10 @@ function activate(context) {
             increment: 60,
           });
 
-          // Insert the commit message into VS Code's commit message input field
           await insertCommitMessage(commitMessage);
 
           progress.report({ message: "Done!", increment: 100 });
 
-          // Display success message
           vscode.window.showInformationMessage(
             `Commit message generated and inserted: ${commitMessage}`
           );
@@ -132,13 +104,11 @@ function activate(context) {
       );
     } catch (error) {
       console.error("Error:", error);
-      // Provide more detailed error messages based on the error type
       if (error.code === "ENOENT") {
         vscode.window.showErrorMessage(
           "Git is not installed or not found in PATH"
         );
       } else if (error.message.includes("API Error")) {
-        // This message will need to be updated when other providers are added
         vscode.window.showErrorMessage(
           `AI API Error (${provider}): ${error.message}`
         );
@@ -154,8 +124,6 @@ function activate(context) {
    * @returns {string}
    */
   function formatGitDiff(diff) {
-    // For now, we'll just return the diff as is
-    // Later, we might want to format it more nicely
     return diff;
   }
 
