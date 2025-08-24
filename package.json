@@ -11,7 +11,7 @@
   ],
   "activationEvents": [],
   "main": "./extension.js",
-  "icon": "icon.svg",
+  "icon": "icon.png",
   "repository": {
     "type": "git",
     "url": "https://github.com/user/CommitCraft.git"
@@ -70,6 +70,7 @@
     "@types/vscode": "^1.103.0",
     "@vscode/test-cli": "^0.0.11",
     "@vscode/test-electron": "^2.5.2",
+    "canvas": "^3.2.0",
     "eslint": "^9.32.0"
   },
   "dependencies": {
