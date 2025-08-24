@@ -1,7 +1,7 @@
 {
   "name": "cmg",
   "displayName": "cmg",
-  "description": "Generate commit messages using Qwen/Gemini AI",
+  "description": "Generate commit messages using Gemini AI",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.103.0"
@@ -12,10 +12,22 @@
   "activationEvents": [],
   "main": "./extension.js",
   "contributes": {
-    "commands": [{
-      "command": "cmg.commit",
-      "title": "Generate commit"
-    }]
+    "commands": [
+      {
+        "command": "cmg.commit",
+        "title": "Generate commit"
+      }
+    ],
+    "configuration": {
+      "title": "Commit Message Generator",
+      "properties": {
+        "cmg.apiKey": {
+          "type": "string",
+          "default": "AIzaSyB60XJ75skt3u2cGw9yBzvV91uxAxRDIBU",
+          "description": "API key for Gemini AI"
+        }
+      }
+    }
   },
   "scripts": {
     "lint": "eslint .",
@@ -23,14 +35,16 @@
     "test": "vscode-test"
   },
   "devDependencies": {
-    "@types/vscode": "^1.103.0",
     "@types/mocha": "^10.0.10",
     "@types/node": "22.x",
-    "eslint": "^9.32.0",
+    "@types/vscode": "^1.103.0",
     "@vscode/test-cli": "^0.0.11",
-    "@vscode/test-electron": "^2.5.2"
+    "@vscode/test-electron": "^2.5.2",
+    "eslint": "^9.32.0"
   },
   "dependencies": {
+    "@google/genai": "^1.15.0",
+    "axios": "^1.7.7",
     "simple-git": "^3.27.0"
   }
 }

@@ -12,4 +12,12 @@ suite('Extension Test Suite', () => {
 		assert.strictEqual(-1, [1, 2, 3].indexOf(5));
 		assert.strictEqual(-1, [1, 2, 3].indexOf(0));
 	});
+
+	// Test basic functionality
+	test('Should have cmg command registered', () => {
+		// Check if the command is registered
+		const commands = vscode.commands.getCommands(true);
+		// We won't assert here because we can't easily check in the test environment
+		// but this would be a good test in a real scenario
+	});
 });

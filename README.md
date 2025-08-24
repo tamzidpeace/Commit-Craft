@@ -1,65 +1,43 @@
 # cmg README
 
-This is the README for your extension "cmg". After writing up a brief description, we recommend including the following sections.
+This extension automatically generates commit messages using Gemini AI based on your staged Git changes.
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
-
-For example if there is an image subfolder under your extension project workspace:
-
-\!\[feature X\]\(images/feature-x.png\)
-
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+- Automatically generates commit messages using Gemini AI
+- Works with staged Git changes
+- Inserts generated message directly into VS Code's commit message field
+- Follows conventional commit format
 
 ## Requirements
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+- Git must be installed and available in your PATH
+- A Gemini API key (free tier available)
 
 ## Extension Settings
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
 This extension contributes the following settings:
 
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
+* `cmg.apiKey`: Your Gemini API key
+
+To set your API key:
+1. Open VS Code settings (Ctrl/Cmd + ,)
+2. Search for "Commit Message Generator"
+3. Enter your Gemini API key in the "API key for Gemini AI" field
+
+## Usage
+
+1. Stage your changes in Git
+2. Run the "Generate commit" command (Ctrl/Cmd + Shift + P, then type "Generate commit")
+3. The extension will generate a commit message and insert it into the commit message field
 
 ## Known Issues
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+- May not work correctly with very large diffs
+- Requires internet connection to access Gemini API
 
 ## Release Notes
 
-Users appreciate release notes as you update your extension.
+### 0.0.1
 
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
----
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux)
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux)
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+Initial release of cmg
