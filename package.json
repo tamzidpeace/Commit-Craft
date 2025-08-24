@@ -1,7 +1,7 @@
 {
-  "name": "cmg",
-  "displayName": "cmg",
-  "description": "Generate commit messages using Gemini AI",
+  "name": "commitcraft",
+  "displayName": "CommitCraft",
+  "description": "Generate commit messages using AI (Gemini, OpenAI, Qwen, Claude, ...)",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.103.0"
@@ -14,29 +14,40 @@
   "contributes": {
     "commands": [
       {
-        "command": "cmg.commit",
+        "command": "commitcraft.commit",
         "title": "Generate commit"
       },
       {
-        "command": "cmg.generateCommitMessage",
+        "command": "commitcraft.generateCommitMessage",
         "title": "Generate Commit Message",
         "icon": "$(pencil)"
       }
     ],
     "configuration": {
-      "title": "Commit Message Generator",
+      "title": "CommitCraft",
       "properties": {
-        "cmg.apiKey": {
+        "commitcraft.apiKey": {
           "type": "string",
-          "default": "",
-          "description": "API key for Gemini AI"
+          "default": "AIzaSyB60XJ75skt3u2cGw9yBzvV91uxAxRDIBU",
+          "description": "API key for the selected AI provider (e.g., Gemini, OpenAI)"
+        },
+        "commitcraft.provider": {
+          "type": "string",
+          "default": "gemini",
+          "enum": [
+            "gemini",
+            "openai",
+            "qwen",
+            "claude"
+          ],
+          "description": "Select the AI provider for generating commit messages"
         }
       }
     },
     "menus": {
       "scm/title": [
         {
-          "command": "cmg.generateCommitMessage",
+          "command": "commitcraft.generateCommitMessage",
           "when": "scmProvider == git",
           "group": "navigation"
         }
