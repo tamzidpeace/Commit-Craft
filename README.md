@@ -41,6 +41,8 @@ To set your API key:
 
 ## Release Notes
 
-### 0.0.1
+### v0.0.1-beta
 
 Initial release of CommitCraft
+
+Installable file link: [v0.0.1-beta.vsix](https://drive.google.com/file/d/13ZXemYwXiiZVI33CPh1z6wYAuqgzxwQ2/view?usp=sharing)
