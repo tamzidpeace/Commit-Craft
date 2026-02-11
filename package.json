@@ -80,7 +80,7 @@
   },
   "dependencies": {
     "@google/genai": "^1.15.0",
-    "axios": "^1.7.7",
+    "axios": "^1.13.5",
     "simple-git": "^3.27.0"
   }
 }
